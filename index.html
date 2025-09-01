@@ -1,0 +1,327 @@
+<!-- ==========  EXTERNAL ASSETS  ========== -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Monserrat:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+
+<!-- ==========  STYLE  ========== -->
+<style>
+/* --------- RESET + GLOBAL --------- */
+.hft-wrapper{
+  font-family:"Monserrat",sans-serif;
+  background:#fff;
+  min-height:100vh;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  padding:2.5rem 1rem;
+  color:#1b1b1b
+}
+.hft-container{width:100%;max-width:34rem;text-align:center}
+
+/* --------- TYPOGRAPHY --------- */
+.hft-title{
+  font-weight:700;
+  line-height:1.25;
+  margin:0;
+  font-size:1.5rem
+}
+@media(min-width:640px){.hft-title{font-size:1.875rem}}
+@media(min-width:768px){.hft-title{font-size:2.25rem}}
+
+.hft-title           { color:#1b1b1b; }
+.hft-title-key       { color:#147191; }
+.hft-step-text{
+  font-size:1rem;
+  color:#374151;
+  margin:0
+}
+@media(min-width:640px){.hft-step-text{font-size:1.125rem}}
+
+/* --------- PROGRESS BAR --------- */
+.hft-bar-shell{
+  width:100%;
+  height:.875rem;
+  background:#e5e7eb;
+  border-radius:9999px;
+  margin-top:.5rem;
+  overflow:hidden
+}
+.hft-bar{
+  height:100%;
+  width:0;
+  background:#16a34a;
+  position:relative;
+  transition:width 2s ease
+}
+.hft-bar-percent{
+  position:absolute;
+  right:.6rem;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:.8rem;
+  color:rgba(255,255,255,.7);
+  font-weight:600;
+  white-space:nowrap
+}
+
+.hft-check{color:#16a34a;font-size:1.125rem;margin-left:.5rem;display:none}
+
+/* --------- LAYOUT HELPERS --------- */
+.hft-step{display:none;margin-top:2rem;text-align:left}
+.hft-flex-between{display:flex;justify-content:space-between;align-items:center}
+.hft-show{display:block !important}
+.hft-hidden{display:none !important}
+
+/* --------- CTA BUTTON --------- */
+.hft-cta{display:none;margin-top:3rem}
+.hft-btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  background:#3aadfa;
+  color:#fff;
+  font-weight:600;
+  font-size:1rem;
+  padding:.75rem 1.5rem;
+  border-radius:.625rem;
+  text-decoration:none;
+  transition:background .3s
+}
+.hft-btn:hover{background: #3aadfa}
+.hft-btn i{margin-left:.75rem}
+
+/* --------- POPUP --------- */
+.hft-popup{
+  position:fixed;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,.6);
+  z-index:999;
+  padding:1rem
+}
+.hft-popup-box{
+  background:#fff;
+  width:100%;
+  max-width:22rem;
+  padding:2rem;
+  border-radius:.75rem;
+  box-shadow:0 10px 25px rgba(0,0,0,.1);
+  text-align:center
+}
+.hft-popup-title{
+  font-size:1.125rem;
+  font-weight:600;
+  margin:0 0 .75rem
+}
+.hft-popup-msg{
+  font-size:.9375rem;
+  color:#4b5563;
+  margin:0 0 1.5rem
+}
+.hft-popup-actions{
+  display:flex;
+  gap:.75rem;
+  flex-wrap:wrap;
+  justify-content:center
+}
+.hft-popup-btn{
+  padding:.5rem 1.25rem;
+  font-size:.9375rem;
+  border-radius:.375rem;
+  border:none;
+  cursor:pointer
+}
+.hft-popup-btn.yes{background:#16a34a;color:#fff}
+.hft-popup-btn.no {background: #16a34a;color:#fff}
+</style>
+<!-- ==========  HTML  ========== -->
+<div class="hft-wrapper">
+  <div class="hft-container"
+
+
+    <!-- STEPS (initially hidden) -->
+    <div id="step-1" class="hft-step">
+      <div class="hft-flex-between">
+        <p id="label-1" class="hft-step-text">Setting Goals</p>
+        <i id="check-1" class="fas fa-check hft-check"></i>
+      </div>
+      <div class="hft-bar-shell">
+        <div id="bar-1" class="hft-bar"><span id="percent-1" class="hft-bar-percent">0%</span></div>
+      </div>
+    </div>
+
+    <div id="step-2" class="hft-step">
+      <div class="hft-flex-between">
+        <p id="label-2" class="hft-step-text">Accessing lifestyle answers</p>
+        <i id="check-2" class="fas fa-check hft-check"></i>
+      </div>
+      <div class="hft-bar-shell">
+        <div id="bar-2" class="hft-bar"><span id="percent-2" class="hft-bar-percent">0%</span></div>
+      </div>
+    </div>
+
+    <div id="step-3" class="hft-step">
+      <div class="hft-flex-between">
+        <p id="label-3" class="hft-step-text">Optimizing product choices</p>
+        <i id="check-3" class="fas fa-check hft-check"></i>
+      </div>
+      <div class="hft-bar-shell">
+        <div id="bar-3" class="hft-bar"><span id="percent-3" class="hft-bar-percent">0%</span></div>
+      </div>
+    </div>
+
+    <!-- FINAL CTA -->
+    <div id="final-button" class="hft-cta">
+      <a href="https://morgeskin.com/products/rimpelbescherming" target="_blank" rel="noopener" class="hft-btn">
+       Submit <i class="fas fa-play"></i>
+      </a>
+    </div>
+  </div><!-- /.container -->
+</div><!-- /.wrapper -->
+
+<!-- POPUP -->
+<div id="hft-popup" class="hft-popup">
+  <div class="hft-popup-box">
+    <h2 class="hft-popup-title"></h2>
+    <p  class="hft-popup-msg"></p>
+    <div class="hft-popup-actions">
+      <button class="hft-popup-btn yes" onclick="hftHandleResponse()">Yes</button>
+      <button class="hft-popup-btn no"  onclick="hftHandleResponse()">No</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==========  JS  ========== -->
+<script>
+/* ==========================================================
+   TRANSFORMATION PLAN  –  Heyflow-safe script (v2)
+   ========================================================== */
+
+/* ---------------- TEXT / STATE CONFIG ---------------- */
+let hftStep = 1;
+
+const hftPopupContent = {
+  1: { t: "To move forward, please specify",
+       m: "Are you determined to finally stop your hair loss?" },
+  2: { t: "To move forward, please specify",
+       m: "Did you know that stress and genetics are one of the contributors to hair loss?" },
+  3: { t: "To move forward, please specify",
+       m: "Does a simpler, effective haircare routine sound good to you?" }
+};
+
+const hftStepLabels = {
+  1: { load: "Setting Goals...",            done: "Goals" },
+  2: { load: "Accessing lifestyle answers…",      done: "Custom Fit" },
+  3: { load: "Optimizing product choices…",         done: "Selected Essentials" }
+};
+
+/* ---------------- HELPERS ---------------- */
+function hftShowSteps () {
+  for (let i = 1; i <= 3; i++) {
+    const stepEl = document.getElementById(`step-${i}`);
+    const lblEl  = document.getElementById(`label-${i}`);
+    const bar    = document.getElementById(`bar-${i}`);
+
+    if (i <= hftStep) {
+      stepEl.classList.add('hft-show');
+      // Only show "load" if the bar isn't already full
+      if (bar.style.width !== '100%') {
+        lblEl.textContent = hftStepLabels[i].load;
+      }
+    } else {
+      stepEl.classList.remove('hft-show');
+    }
+  }
+}
+
+
+function hftFillBar (id, target, cb) {
+  hftShowSteps();
+  const bar      = document.getElementById(id);
+  const pctLbl   = document.getElementById(id.replace('bar', 'percent'));
+  const lbl      = document.getElementById(id.replace('bar', 'label'));
+  const tgt      = parseInt(target, 10);
+  let cur = 0;
+
+  const timer = setInterval(() => {
+    if (cur >= tgt) {
+      clearInterval(timer);
+      if (tgt === 100) lbl.textContent = hftStepLabels[hftStep].done;
+      if (cb) setTimeout(cb, 1500);
+    } else {
+      cur++;
+      bar.style.width = `${cur}%`;
+      pctLbl.textContent = `${cur}%`;
+    }
+  }, 50);
+}
+
+function hftShowPopup () {
+  const pop      = document.getElementById('hft-popup');
+  const { t, m } = hftPopupContent[hftStep];
+  pop.querySelector('.hft-popup-title').textContent = t;
+  pop.querySelector('.hft-popup-msg').textContent   = m;
+  pop.style.display = 'flex';
+}
+
+function hftHidePopup () {
+  document.getElementById('hft-popup').style.display = 'none';
+}
+
+function hftHandleResponse () {
+  hftHidePopup();
+
+  /* mark current step complete */
+  document.getElementById(`bar-${hftStep}`).style.width      = '100%';
+  document.getElementById(`percent-${hftStep}`).textContent  = '100%';
+  document.getElementById(`check-${hftStep}`).style.display  = 'inline';
+  document.getElementById(`label-${hftStep}`).textContent    = hftStepLabels[hftStep].done;
+
+  /* next step or finish */
+  hftStep++;
+
+  if (hftStep <= 3) {
+    setTimeout(() => hftFillBar(`bar-${hftStep}`, 50, hftShowPopup), 4000);
+  } else {
+    hftShowSteps();
+    setTimeout(() => {
+      document.getElementById('final-button').style.display = 'block';
+    }, 1500);
+  }
+}
+
+/* ---------------- INIT (run once) ---------------- */
+function hftRunOnce () {
+  if (window.__hft_started) return;      /* guard against double-init */
+  window.__hft_started = true;
+
+  setTimeout(() => {
+    hftShowSteps();
+    hftFillBar('bar-1', 50, () => setTimeout(hftShowPopup, 2000));
+  }, 4000);                              /* delayed start */
+}
+
+/* --------------------------------------------------
+   ① Stand-alone preview  –  DOMContentLoaded
+-------------------------------------------------- */
+document.addEventListener('DOMContentLoaded', () => {
+  /* wait one tick so the Heyflow iframe is fully parsed */
+  setTimeout(hftRunOnce, 50);
+});
+
+/* --------------------------------------------------
+   ② Multi-screen flow  –  heyflow-screen-view
+-------------------------------------------------- */
+/*  If your flow has many screens, set MY_SCREEN to
+    the exact “Screen Name” of the step that contains
+    this HTML.  Leave it "" to trigger on first view.  */
+const MY_SCREEN = "";   // e.g. "Transformation"
+
+window.addEventListener('heyflow-screen-view', (e) => {
+  if (!MY_SCREEN || (e.detail && e.detail.screenName === MY_SCREEN)) {
+    hftRunOnce();
+  }
+});
+</script>
