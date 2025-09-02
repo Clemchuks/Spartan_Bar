@@ -1,12 +1,16 @@
 <!-- ==========  EXTERNAL ASSETS  ========== -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-<link href="https://fonts.googleapis.com/css2?family=Monserrat:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+
 
 <!-- ==========  STYLE  ========== -->
 <style>
 /* --------- RESET + GLOBAL --------- */
+
+.hft-wrapper{ 
+  font-family:"Montserrat", sans-serif; }
+
 .hft-wrapper{
-  font-family:"Monserrat",sans-serif;
   background:#eaf1f1;
   min-height:100vh;
   display:flex;
@@ -34,6 +38,7 @@
   color:#374151;
   margin:0
 }
+
 @media(min-width:640px){.hft-step-text{font-size:1.125rem}}
 
 /* --------- PROGRESS BAR --------- */
@@ -77,7 +82,8 @@
   display:flex;
   align-items:center;
   justify-content:center;
-  width:100%;
+   max-width:220px;   
+  margin:0 auto;
   background:#3aadfa;
   color:#fff;
   font-weight:600;
