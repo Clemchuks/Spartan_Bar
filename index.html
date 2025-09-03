@@ -117,15 +117,19 @@
   text-align:center
 }
 .hft-popup-title{
-  font-size:1.125rem;
-  font-weight:600;
-  margin:0 0 .75rem
+  font-size: 1.3rem;       /* subtle, like the screenshot */
+  font-weight: 500;
+  color:#6b7280;           /* gray */
+  margin:0 0 .5rem;
 }
 .hft-popup-msg{
-  font-size:.9375rem;
-  color:#4b5563;
-  margin:0 0 1.5rem
+  font-size: 1.4rem;      /* larger main question */
+  font-weight: 500;
+  color:#111827;           /* near-black */
+  line-height: 1.45;
+  margin:0 0 1.25rem;
 }
+
 .hft-popup-actions{
   display:flex;
   gap:.75rem;
@@ -135,10 +139,21 @@
 .hft-popup-btn{
   padding:.5rem 1.25rem;
   font-size:.9375rem;
-  border-radius:.375rem;
+  border-radius:1rem;
   border:none;
   cursor:pointer
 }
+/* Show a ✓ at the end of the bar when complete */
+.hft-bar-percent.is-complete{
+  color:#fff;                 /* white on the green bar */
+}
+.hft-bar-percent.is-complete::before{
+  content:"\2713";            /* Unicode check mark */
+  font-weight:700;
+  font-size:1rem;
+  line-height:1;
+}
+
 .hft-popup-btn.yes{background:#16a34a;color:#fff}
 .hft-popup-btn.no {background: #16a34a;color:#fff}
 </style>
@@ -180,7 +195,7 @@
 
     <!-- FINAL CTA -->
     <div id="final-button" class="hft-cta">
-      <a href="https://morgeskin.com/products/rimpelbescherming" target="_blank" rel="noopener" class="hft-btn">
+      <a href="https://myberelli.com/products/growth-serum" target="_blank" rel="noopener" class="hft-btn">
        Submit 
       </a>
     </div>
@@ -199,7 +214,7 @@
   </div>
 </div>
 
-<!-- ==========  JS  ========== -->
+
 <script>
 /* ==========================================================
    TRANSFORMATION PLAN  –  Heyflow-safe script (v2)
@@ -218,9 +233,9 @@ const hftPopupContent = {
 };
 
 const hftStepLabels = {
-  1: { load: "Setting Goals...",            done: "Goals" },
-  2: { load: "Accessing lifestyle answers…",      done: "Custom Fit" },
-  3: { load: "Optimizing product choices…",         done: "Selected Essentials" }
+  1: { load: "Setting Goals...",                 done: "Goals" },
+  2: { load: "Accessing lifestyle answers…",     done: "Custom Fit" },
+  3: { load: "Optimizing product choices…",      done: "Selected Essentials" }
 };
 
 /* ---------------- HELPERS ---------------- */
@@ -232,7 +247,6 @@ function hftShowSteps () {
 
     if (i <= hftStep) {
       stepEl.classList.add('hft-show');
-      // Only show "load" if the bar isn't already full
       if (bar.style.width !== '100%') {
         lblEl.textContent = hftStepLabels[i].load;
       }
@@ -242,29 +256,44 @@ function hftShowSteps () {
   }
 }
 
-
-function hftFillBar (id, target, cb) {
+/* Smooth, exact +1 counting (no skips) */
+function hftFillBar (id, target, cb, stepDelayMs = 20) {
   hftShowSteps();
-  const bar      = document.getElementById(id);
-  const pctLbl   = document.getElementById(id.replace('bar', 'percent'));
-  const lbl      = document.getElementById(id.replace('bar', 'label'));
-  const tgt      = parseInt(target, 10);
-  let cur = 0;
 
-  const timer = setInterval(() => {
+  const bar    = document.getElementById(id);
+  const pctLbl = document.getElementById(id.replace('bar', 'percent'));
+  const lbl    = document.getElementById(id.replace('bar', 'label'));
+  const tgt    = parseInt(target, 10);
+
+  // Start from current width if any; fall back to 0
+  const start = parseInt((bar.style.width || '0').replace('%', ''), 10) || 0;
+  let cur = start;
+
+  // Ensure label visible while animating
+  pctLbl.style.display = '';
+  pctLbl.textContent = `${cur}%`;
+
+  function tick () {
     if (cur >= tgt) {
-      clearInterval(timer);
+      // done for this stage
       if (tgt === 100) {
         lbl.textContent = hftStepLabels[hftStep].done;
-        pctLbl.style.display = 'none';  // Hide the percentage text after reaching 100%
+        pctLbl.textContent = "";          // hide number
+        pctLbl.style.display = "none";    // hide overlay
       }
       if (cb) setTimeout(cb, 1500);
-    } else {
-      cur++;
-      bar.style.width = `${cur}%`;
-      pctLbl.textContent = `${cur}%`;
+      return;
     }
-  }, 50);
+
+    cur += 1;                              // exact +1 increment
+    bar.style.width = `${cur}%`;
+    pctLbl.textContent = `${cur}%`;
+
+    setTimeout(tick, stepDelayMs);
+  }
+
+  // Kick off counting
+  setTimeout(tick, stepDelayMs);
 }
 
 function hftShowPopup () {
@@ -282,11 +311,15 @@ function hftHidePopup () {
 function hftHandleResponse () {
   hftHidePopup();
 
-  /* mark current step complete */
-  document.getElementById(`bar-${hftStep}`).style.width      = '100%';
-  document.getElementById(`percent-${hftStep}`).textContent  = '100%';
-  document.getElementById(`check-${hftStep}`).style.display  = 'inline';
-  document.getElementById(`label-${hftStep}`).textContent    = hftStepLabels[hftStep].done;
+  /* mark current step complete instantly */
+  document.getElementById(`bar-${hftStep}`).style.width = '100%';
+
+  const pct = document.getElementById(`percent-${hftStep}`);
+  pct.textContent = "";                 // no "100%"
+  pct.style.display = "none";           // hide the label
+
+  document.getElementById(`check-${hftStep}`).style.display = 'inline';
+  document.getElementById(`label-${hftStep}`).textContent   = hftStepLabels[hftStep].done;
 
   /* next step or finish */
   hftStep++;
@@ -316,16 +349,12 @@ function hftRunOnce () {
    ① Stand-alone preview  –  DOMContentLoaded
 -------------------------------------------------- */
 document.addEventListener('DOMContentLoaded', () => {
-  /* wait one tick so the Heyflow iframe is fully parsed */
   setTimeout(hftRunOnce, 50);
 });
 
 /* --------------------------------------------------
    ② Multi-screen flow  –  heyflow-screen-view
 -------------------------------------------------- */
-/*  If your flow has many screens, set MY_SCREEN to
-    the exact “Screen Name” of the step that contains
-    this HTML.  Leave it "" to trigger on first view.  */
 const MY_SCREEN = "";   // e.g. "Transformation"
 
 window.addEventListener('heyflow-screen-view', (e) => {
@@ -333,7 +362,4 @@ window.addEventListener('heyflow-screen-view', (e) => {
     hftRunOnce();
   }
 });
-
-
 </script>
-
